@@ -1,92 +1,192 @@
 <!DOCTYPE html>
-<html style="padding:0;margin:0;width:100%;height:100%">
-  <head>
-    <title>Xnoe Notes</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<html>
 
-    <style>
-      * {box-sizing: border-box;}
+<head>
+	<title>Web Notes</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<style>
+		* {
+			box-sizing: border-box;
+			outline: 0
+		}
 
-      *:focus{outline:none;}
+		html {
+			padding: 0;
+			margin: 0;
+			width: 100vw;
+			height: 100vh
+		}
 
-      body *,body {
-        font-family: sans-serif;
-        display: flex;
-        flex-direction: column;
-      }
+		body,
+		body * {
+			font-family: sans-serif;
+			display: flex;
+			flex-direction: column
+		}
 
-      #notes {
-        flex-direction: column;
-      }
+		body {
+			padding: 0;
+			margin: 0;
+			width: 100%;
+			height: 100%;
+			flex-direction: row
+		}
 
-      body {flex-direction: row;}
+		nav {
+			width: 25%;
+			height: 100vh;
+			background: #202020;
+			padding: 30px 20px;
+			justify-content: space-between;
+			overflow-y: hidden;
+			font-size: 1em
+		}
 
-      nav {width: 20%;background: #202020;height:100%;padding: 30px 20px; justify-content:space-between; overflow-y: auto;}
-      nav > section > h2 {font-weight: bold; color: #a6f;}
-      a {color: #fff; font-weight: bold;}
+		a {
+			color: #fff;
+			font-weight: 700;
+			text-decoration: none
+		}
 
-      h2 {margin:0;}
+		h2 {
+			margin: 0
+		}
 
-      #notes > span {
-        width: 100%;
-        display: flex;
-        height: 50px;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
+		input {
+			color: #fff
+		}
 
-      #notes > span:hover {
-        background-color: #303030;
-      }
+		textarea {
+			width: 100%;
+			height: 100%;
+			padding: 0:margin:0;
+			border: none;
+			font-family: sans-serif;
+			font-size: 14px;
+			display: inline;
+			resize: none
+		}
 
-      #text {
-        background: #fff;
-        color: #202020;
-        width: 80%;
-        padding: 0 20px;
-      }
+		.header {
+			font-weight: 700;
+			color: #a6f;
+			text-align: center
+		}
 
-      #text > a {color: #202020;}
+		.tab {
+			width: 100%;
+			display: flex;
+			height: 50px;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			padding: 15px;
+			margin: 15px 5px 15px 0
+		}
 
-      textarea {width:100%;height:100%;padding:0:margin:0;border:none;font-family:sans-serif;font-size:14px;display:inline;resize:none;}
+		.tab:hover {
+			background-color: #303030;
+			border-radius: 8px
+		}
 
-      input {color: white;}
-    </style>
-  </head>
+		.text-section {
+			background: #fff;
+			color: #202020;
+			width: 80%;
+			padding: 0 20px
+		}
 
-  <body style="padding:0;margin:0;width:100%;height:100%;">
-    <nav>
-      <section>
-        <h2>Xnoe Notes</h2>
-        <div id="notes"></div>
-        <span><input type="file" id="file" /></span>
+		.download {
+			color: #202020
+		}
+
+		.inputfile {
+			width: .1px;
+			height: .1px;
+			opacity: 0;
+			overflow: hidden;
+			position: absolute;
+			z-index: -1
+		}
+
+		.inputfile+label {
+			font-size: 1.25em;
+			font-weight: 700;
+			color: #797d7f;
+			background-color: #fff;
+			display: inline-block;
+			border-radius: 8px;
+			margin: 5px;
+			padding: 5px;
+			text-align: center
+		}
+
+		.inputfile+label:hover,
+		.inputfile:focus+label {
+			background-color: #3498db;
+			color: #fff
+		}
+
+		.inputfile:focus+label {
+			outline: 1px dotted #000;
+			outline: -webkit-focus-ring-color auto 5px
+		}
+
+		.inputfile+label {
+			cursor: pointer
+		}
+
+		.download {
+			text-align: right
+		}
+
+		.text-title {
+			color: #3085d6
+		}
+
+		.remove:hover {
+			color: #f08080
+		}
+
+		.rename:hover {
+			color: #7fffd4
+		}
+	</style>
+</head>
+
+<body>
+	<nav>
+		<section>
+			<h2 class="header">Web Notes</h2>
+			<div id="notes"></div>
+			<input type="file" name="file" id="file" class="inputfile" />
+			<label for="file">Upload a file</label>
       </section>
       <div>
-        <a href="https://xnopyt.com">XNOPYT</a>
-        <a href="https://xnoe.moe">Xnoe.moe</a>
+        <a href="https://coolamazingwebsite.com">Home</a>
+        <a href="https://github.com/xnoe/xnoenotes">Fork of Xnoe Notes</a>
       </div>
     </nav>
 
-    <section id="text">
-      <h1 id="title"></h1>
-      <a href="#" onclick="savelocal()">Download this file.</a>
+    <section id="text" class="text-section">
+      <h1 id="title" class="text-title"></h1>
       <textarea oninput="save()" contenteditable="true" id="content"></textarea>
+			<a href="#" onclick="savelocal()" class="download">Download Text</a>
     </section>
 
     <a id="saver" style="display: none !important;"></a>
   </body>
 
   <script style="display:none;">
-    current = "Welcome to Xnoe Notes!";
+    current = "Introduction";
 
     genList = () => {
       document.getElementById("notes").innerHTML = "";
       Object.keys(localStorage).forEach(x=>{
-        document.getElementById("notes").innerHTML += '<span><a style="overflow:hidden;" onclick="loadDoc(\''+x+'\')" href="#">'+x+'</a>'+(x!="Welcome to Xnoe Notes!"?'<span><a onclick="rename(\''+x+'\')" href="#">Rename</a> <a onclick="remove(\''+x+'\')" href="#">X</a></span></span>':'');
+        document.getElementById("notes").innerHTML += '<span class="tab"><a style="overflow:hidden;" onclick="loadDoc(\''+x+'\')" href="#">'+x+'</a>'+(x!="Introduction"?'<span><a onclick="rename(\''+x+'\')" href="#" class="rename">Rename</a> <a onclick="remove(\''+x+'\')" href="#" class="remove">Remove</a></span></span>':'');
       });
-      document.getElementById("notes").innerHTML += '<span><a onclick="newFile()" href="#">New File</a></span>'
+      document.getElementById("notes").innerHTML += '<span class="tab"><a onclick="newFile()" href="#">New File</a></span>'
     }
 
     getCur = () => {return current};
@@ -148,7 +248,7 @@
     }
 
     document.body.onload = () => {
-      saveDoc("Welcome to Xnoe Notes!", "Welcome to Xnoe Notes!\nClick here to start writing!");
+      saveDoc("Introduction", "Welcome to Web Notes, a fork of Xnoe Notes!\nClick here to start writing!");
       loadDoc(getCur());
 
       document.getElementById("file").addEventListener('change', loadFile, false);
