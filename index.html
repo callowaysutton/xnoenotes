@@ -1,169 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 	<title>Web Notes</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="A simple web application for keeping and managing notes">
+	<meta name="keywords" content="HTML, Notes, Simple, Web App">
+	<meta name="author" content="Calloway Sutton, Xnoe">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-	<style>
-		* {
-			box-sizing: border-box;
-			outline: 0
-		}
-
-		html {
-			padding: 0;
-			margin: 0;
-			width: 100vw;
-			height: 100vh
-		}
-
-		body,
-		body * {
-			font-family: sans-serif;
-			display: flex;
-			flex-direction: column
-		}
-
-		body {
-			padding: 0;
-			margin: 0;
-			width: 100%;
-			height: 100%;
-			flex-direction: row
-		}
-
-		nav {
-			width: 25%;
-			height: 100vh;
-			background: #202020;
-			padding: 30px 20px;
-			justify-content: space-between;
-			overflow-y: hidden;
-			font-size: 1em
-		}
-
-		a {
-			color: #fff;
-			font-weight: 700;
-			text-decoration: none
-		}
-
-		h2 {
-			margin: 0
-		}
-
-		input {
-			color: #fff
-		}
-
-		textarea {
-			width: 100%;
-			height: 100%;
-			padding: 0:margin:0;
-			border: none;
-			font-family: sans-serif;
-			font-size: 14px;
-			display: inline;
-			resize: none
-		}
-
-		.header {
-			font-weight: 700;
-			color: #a6f;
-			text-align: center
-		}
-
-		.tab {
-			width: 100%;
-			display: flex;
-			height: 50px;
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: center;
-			padding: 15px;
-			margin: 15px 5px 15px 0
-		}
-
-		.tab:hover {
-			background-color: #303030;
-			border-radius: 8px
-		}
-
-		.text-section {
-			background: #fff;
-			color: #202020;
-			width: 80%;
-			padding: 0 20px
-		}
-
-		.download {
-			color: #202020
-		}
-
-		.inputfile {
-			width: .1px;
-			height: .1px;
-			opacity: 0;
-			overflow: hidden;
-			position: absolute;
-			z-index: -1
-		}
-
-		.inputfile+label {
-			font-size: 1.25em;
-			font-weight: 700;
-			color: #797d7f;
-			background-color: #fff;
-			display: inline-block;
-			border-radius: 8px;
-			margin: 5px;
-			padding: 5px;
-			text-align: center
-		}
-
-		.inputfile+label:hover,
-		.inputfile:focus+label {
-			background-color: #3498db;
-			color: #fff
-		}
-
-		.inputfile:focus+label {
-			outline: 1px dotted #000;
-			outline: -webkit-focus-ring-color auto 5px
-		}
-
-		.inputfile+label {
-			cursor: pointer
-		}
-
-		.download {
-			text-align: right
-		}
-
-		.text-title {
-			color: #3085d6
-		}
-
-		.remove:hover {
-			color: #f08080
-		}
-
-		.rename:hover {
-			color: #7fffd4
-		}
-	</style>
+	<link href="style.css" rel="stylesheet">
 </head>
 
 <body>
 	<nav>
 		<section>
 			<h2 class="header">Web Notes</h2>
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9">
+
+			</script>
 			<div id="notes"></div>
 			<input type="file" name="file" id="file" class="inputfile" />
 			<label for="file">Upload a file</label>
       </section>
-      <div>
+      <div class="links">
         <a href="https://coolamazingwebsite.com">Home</a>
         <a href="https://github.com/xnoe/xnoenotes">Fork of Xnoe Notes</a>
       </div>
@@ -172,86 +31,12 @@
     <section id="text" class="text-section">
       <h1 id="title" class="text-title"></h1>
       <textarea oninput="save()" contenteditable="true" id="content"></textarea>
+			<label for="content" class="hidden"> Notes Section </label>
 			<a href="#" onclick="savelocal()" class="download">Download Text</a>
     </section>
 
     <a id="saver" style="display: none !important;"></a>
   </body>
 
-  <script style="display:none;">
-    current = "Introduction";
-
-    genList = () => {
-      document.getElementById("notes").innerHTML = "";
-      Object.keys(localStorage).forEach(x=>{
-        document.getElementById("notes").innerHTML += '<span class="tab"><a style="overflow:hidden;" onclick="loadDoc(\''+x+'\')" href="#">'+x+'</a>'+(x!="Introduction"?'<span><a onclick="rename(\''+x+'\')" href="#" class="rename">Rename</a> <a onclick="remove(\''+x+'\')" href="#" class="remove">Remove</a></span></span>':'');
-      });
-      document.getElementById("notes").innerHTML += '<span class="tab"><a onclick="newFile()" href="#">New File</a></span>'
-    }
-
-    getCur = () => {return current};
-
-    saveDoc = (docFile, content) => {
-      localStorage.setItem(docFile, content);
-      genList();
-    }
-
-    loadDoc = docFile => {
-      current = docFile;
-      doc = localStorage.getItem(docFile);
-      document.getElementById("title").innerHTML = docFile;
-      document.getElementById("content").value = doc;
-      genList();
-    }
-
-    savelocal = () => {
-      saver = document.getElementById("saver");
-      saver.href = 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(localStorage.getItem(getCur()));
-      saver.download = getCur() + '.txt';
-      saver.click();
-    }
-
-    save = () => saveDoc(getCur(), document.getElementById("content").value);
-
-    remove = item => {localStorage.removeItem(item);getCur()==item?loadDoc("Welcome to Xnoe Notes!"):loadDoc(getCur())}
-
-    async function rename(old) {
-      const { value: newfilename } = await Swal.fire({
-        heightAuto: false,
-        title: `What do you want to rename ${old} to?`,
-        input: 'text',
-        showCancelButton: true
-      });
-      if (newfilename) {
-        saveDoc(newfilename, localStorage.getItem(old));
-        current = newfilename; 
-        remove(old);
-        loadDoc(current);
-      }
-    }
-
-    async function newFile() {
-      const { value: filename } = await Swal.fire({
-        heightAuto: false,
-        title: `What do you want to name your new file?`,
-        input: 'text',
-        showCancelButton: true
-      });
-      filename? saveDoc(filename, ""): false;
-    }
-
-    reader = new FileReader();
-
-    loadFile = x => {
-      reader.readAsBinaryString(x.target.files[0]);
-      setTimeout(()=>{saveDoc(x.target.files[0].name, reader.result);},100);
-    }
-
-    document.body.onload = () => {
-      saveDoc("Introduction", "Welcome to Web Notes, a fork of Xnoe Notes!\nClick here to start writing!");
-      loadDoc(getCur());
-
-      document.getElementById("file").addEventListener('change', loadFile, false);
-    };
-  </script>
+  <script src="scripts.js" style="display:none;"></script>
 </html>
